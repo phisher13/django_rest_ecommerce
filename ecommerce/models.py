@@ -42,7 +42,8 @@ class Category(models.Model):
     parent = models.ForeignKey('self',
                                on_delete=models.CASCADE,
                                null=True,
-                               blank=True)
+                               blank=True,
+                               related_name='children')
 
     class Meta:
         db_table = 'category'
