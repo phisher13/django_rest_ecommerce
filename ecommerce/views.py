@@ -5,7 +5,7 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
     CreateAPIView, DestroyAPIView
 )
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView, Response
 
 from .models import Category, Product, Favourite
@@ -14,9 +14,10 @@ from .serializer import (
     ProductSerializer,
     ProductCreateSerializer,
     CategoryCreateSerializer,
-    FavouritesSerializer
+    FavouritesSerializer,
+
 )
-from .services import get_serializable_queryset
+from .services import get_serializable_queryset, add_products_to_favourite
 from .permissions import IsOwner
 
 
@@ -27,8 +28,8 @@ class CategoryListView(ListAPIView):
 
 class ProductApiView(APIView):
     def get(self, request):
-        category_slug = request.GET.get('category')
-        product_slug = request.GET.get('product', None)
+        category_slug = self.request.GET.get('category')
+        product_slug = self.request.GET.get('product', None)
         data = get_serializable_queryset(category_slug=category_slug, product_slug=product_slug)
         return Response(status=http.HTTPStatus.OK, data=data)
 
@@ -76,3 +77,11 @@ class FavouriteListView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Favourite.objects.all().filter(user=user)
+
+
+class FavouriteCreateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = add_products_to_favourite(self.request)
+        return Response(status=201, data=data)
