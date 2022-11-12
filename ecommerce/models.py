@@ -25,8 +25,14 @@ class Product(models.Model):
         verbose_name_plural = 'products'
         ordering = ['-date']
 
+    @staticmethod
+    def count(price, discount=None):
+        if discount:
+            return int(price - ((price / 100) * discount))
+        return price
+
     def save(self, *args, **kwargs):
-        self.total_price = self.price - (self.price / 100) * self.discount
+        self.total_price = Product.count(self.price, self.discount)
         if not self.slug:
             self.slug = slugify(f'{self.title}-{self.uuid}')
         return super().save(*args, **kwargs)
