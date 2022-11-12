@@ -56,3 +56,9 @@ class FavouritesSerializer(ModelSerializer):
     class Meta:
         model = Favourite
         fields = ('uuid', 'products')
+
+
+class FavouritesCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Favourite
+        fields = '__all__'
