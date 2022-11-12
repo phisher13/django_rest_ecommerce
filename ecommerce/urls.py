@@ -6,12 +6,19 @@ from .views import (
     ProductApiView,
     ProductView,
     ProductCreateView,
-    CategoryCreateView
+    CategoryCreateView,
+    FavouriteView,
+    FavouriteListView
 )
 
 urlpatterns = [
+    # for every user
     path('category/', CategoryListView.as_view()),
     path('product/', ProductApiView.as_view()),
+
+    # for owner and superuser
+    path('favourites/', FavouriteListView.as_view()),
+    path('favourite/<str:uuid>', FavouriteView.as_view()),
 
     # for superuser
     path('category/new/', CategoryCreateView.as_view()),
