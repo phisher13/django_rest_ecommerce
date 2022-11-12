@@ -3,19 +3,21 @@ import http
 from rest_framework.generics import (
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
-    CreateAPIView
+    CreateAPIView, DestroyAPIView
 )
 from rest_framework.permissions import IsAdminUser
 from rest_framework.views import APIView, Response
 
-from .models import Category, Product
+from .models import Category, Product, Favourite
 from .serializer import (
     CategorySerializer,
     ProductSerializer,
     ProductCreateSerializer,
-    CategoryCreateSerializer
+    CategoryCreateSerializer,
+    FavouritesSerializer
 )
 from .services import get_serializable_queryset
+from .permissions import IsOwner
 
 
 class CategoryListView(ListAPIView):
@@ -55,3 +57,22 @@ class ProductCreateView(CreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductCreateSerializer
     permission_classes = [IsAdminUser]
+
+
+class FavouriteView(DestroyAPIView):
+    lookup_field = 'uuid'
+    serializer_class = FavouritesSerializer
+    permission_classes = [IsOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Favourite.objects.all().filter(user=user)
+
+
+class FavouriteListView(ListAPIView):
+    serializer_class = FavouritesSerializer
+    permission_classes = [IsOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Favourite.objects.all().filter(user=user)
