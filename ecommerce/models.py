@@ -68,7 +68,9 @@ class Category(models.Model):
 
 class Favourite(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
-    products = models.ManyToManyField(Product)
+    products = models.ManyToManyField(Product,
+                                      null=False,
+                                      blank=False)
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              null=False,
