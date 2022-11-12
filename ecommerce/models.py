@@ -1,5 +1,6 @@
 import uuid
 
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 
@@ -65,4 +66,19 @@ class Category(models.Model):
         return self.slug
 
 
+class Favourite(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4)
+    products = models.ManyToManyField(Product)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             null=False,
+                             blank=False,
+                             related_name='favourites')
 
+    class Meta:
+        db_table = 'favourite'
+        verbose_name = 'favourite'
+        verbose_name_plural = 'favourites'
+
+    def __str__(self):
+        return f'{self.user}: {[i.title for i in self.products.all()]}'
