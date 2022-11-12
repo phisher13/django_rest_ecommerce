@@ -21,7 +21,13 @@ class CategorySerializer(ModelSerializer):
     class Meta:
         list_serializer_class = FilterCategorySerializer
         model = Category
-        fields = ('name', 'children')
+        fields = ('name', 'slug', 'children')
+
+
+class CategoryCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 
 class ProductSerializer(ModelSerializer):
