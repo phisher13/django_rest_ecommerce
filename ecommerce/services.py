@@ -1,5 +1,5 @@
-from .models import Product, Favourite, Cart
-from .serializer import ProductSerializer, FavouritesCreateSerializer, CartSerializer
+from .models import Product, Favourite, Cart, Order
+from .serializer import ProductSerializer, FavouritesCreateSerializer, CartSerializer, OrderSerializer
 
 
 def get_serializable_queryset(category_slug: str, product_slug: str = None) -> dict:
@@ -41,4 +41,15 @@ def add_products_to_cart(request):
         )
 
     serializer = CartSerializer(instance=cart)
+    return serializer.data
+
+
+def crete_new_order(request):
+    user = request.user
+    order = Order.objects.create(
+        user=user,
+        cart_id=request.data['cart_id']
+    )
+    serializer = OrderSerializer(instance=order)
+
     return serializer.data
