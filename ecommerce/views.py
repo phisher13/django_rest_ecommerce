@@ -3,7 +3,7 @@ import http
 from rest_framework.generics import (
     ListAPIView,
     RetrieveUpdateDestroyAPIView,
-    CreateAPIView, DestroyAPIView
+    CreateAPIView, DestroyAPIView, RetrieveAPIView
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView, Response
@@ -17,7 +17,8 @@ from .serializer import (
     FavouritesSerializer,
     CartSerializer, OrderSerializer,
 )
-from .services import get_serializable_queryset, add_products_to_favourite, add_products_to_cart, crete_new_order
+from .services import add_products_to_favourite, add_products_to_cart, crete_new_order, get_all_products, \
+    get_detail_product
 from .permissions import IsOwner
 
 
@@ -26,12 +27,16 @@ class CategoryListView(ListAPIView):
     serializer_class = CategorySerializer
 
 
-class ProductApiView(APIView):
-    def get(self):
-        category_slug = self.request.GET.get('category')
-        product_slug = self.request.GET.get('product', None)
-        data = get_serializable_queryset(category_slug=category_slug, product_slug=product_slug)
-        return Response(status=http.HTTPStatus.OK, data=data)
+class ProductListView(APIView):
+    def get(self, request):
+        data = get_all_products(self.request)
+        return Response(status=200, data=data)
+
+
+class ProductDetailView(APIView):
+    def get(self, request, slug):
+        data = get_detail_product(self.request, slug)
+        return Response(status=200, data=data)
 
 
 class CategoryView(RetrieveUpdateDestroyAPIView):
