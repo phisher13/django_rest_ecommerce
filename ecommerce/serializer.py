@@ -1,6 +1,7 @@
-from rest_framework.serializers import ModelSerializer, Serializer, ListSerializer
+from rest_framework.serializers import ModelSerializer, \
+    Serializer, ListSerializer
 
-from .models import Product, Category, Favourite
+from .models import Product, Category, Favourite, Cart
 
 
 class RecursiveSerializer(Serializer):
@@ -61,4 +62,18 @@ class FavouritesSerializer(ModelSerializer):
 class FavouritesCreateSerializer(ModelSerializer):
     class Meta:
         model = Favourite
+        fields = '__all__'
+
+
+class ProductsForCartSerializer(ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ('title', 'total_price')
+
+
+class CartSerializer(ModelSerializer):
+    product = ProductsForCartSerializer(read_only=True)
+
+    class Meta:
+        model = Cart
         fields = '__all__'
