@@ -11,7 +11,9 @@ from .views import (
     FavouriteListView,
     FavouriteCreateView,
     CartView,
-    CartApiView
+    CartApiView,
+    OrderView,
+    OrderApiView
 )
 
 urlpatterns = [
@@ -25,6 +27,8 @@ urlpatterns = [
     path('favourites/<str:uuid>', FavouriteView.as_view()),
     path('cart/info/', CartView.as_view()),
     path('cart/', CartApiView.as_view()),
+    path('order/', OrderView.as_view()),
+    path('order/new/', OrderApiView.as_view()),
 
     # for superuser
     path('category/new/', CategoryCreateView.as_view()),
