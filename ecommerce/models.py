@@ -84,3 +84,30 @@ class Favourite(models.Model):
 
     def __str__(self):
         return f'{self.user}: {[i.title for i in self.products.all()]}'
+
+
+class Cart(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4)
+    product = models.ForeignKey(Product,
+                                on_delete=models.CASCADE,
+                                null=False,
+                                blank=False)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             null=False,
+                             blank=False,
+                             related_name='cart')
+    quantity = models.IntegerField(null=False, blank=False, default=1)
+    amount = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'cart'
+        verbose_name = 'cart'
+        verbose_name_plural = 'carts'
+
+    def save(self, *args, **kwargs):
+        self.amount = (self.product.total_price * self.quantity)
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f'{self.uuid}'
