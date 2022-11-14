@@ -4,7 +4,8 @@ from .models import (
     Product,
     Category,
     Favourite,
-    Cart
+    Cart,
+    Order
 )
 
 
@@ -18,3 +19,4 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Category)
 admin.site.register(Favourite)
 admin.site.register(Cart)
+admin.site.register(Order)
