@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
     CategoryListView,
     CategoryView,
-    ProductApiView,
+    ProductListView,
+    ProductDetailView,
     ProductView,
     ProductCreateView,
     CategoryCreateView,
@@ -19,7 +20,8 @@ from .views import (
 urlpatterns = [
     # for every user
     path('category/', CategoryListView.as_view()),
-    path('product/', ProductApiView.as_view()),
+    path('product/', ProductListView.as_view()),
+    path('product/<str:slug>/', ProductDetailView.as_view()),
 
     # for authenticated
     path('favourites/', FavouriteCreateView.as_view()),
