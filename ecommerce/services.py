@@ -29,17 +29,16 @@ def add_products_to_favourite(request):
 
 def add_products_to_cart(request):
     user = request.user
-    product = request.data
-    cart = Cart.objects.filter(product=product['product']).filter(user=user).first()
+    cart = Cart.objects.filter(product_id=request.data['product_id']).filter(user=user).first()
     if cart:
         cart.quantity += 1
-    else:
-        cart = Cart(
-            user=user,
-            product=product['product'],
-            quantity=1
-        )
         cart.save()
+    else:
+        cart = Cart.objects.create(
+            quantity=1,
+            product_id=request.data['product_id'],
+            user=user
+        )
 
     serializer = CartSerializer(instance=cart)
     return serializer.data
