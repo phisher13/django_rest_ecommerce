@@ -8,14 +8,14 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView, Response
 
-from .models import Category, Product, Favourite
+from .models import Category, Product, Favourite, Cart
 from .serializer import (
     CategorySerializer,
     ProductSerializer,
     ProductCreateSerializer,
     CategoryCreateSerializer,
     FavouritesSerializer,
-
+    CartSerializer,
 )
 from .services import get_serializable_queryset, add_products_to_favourite
 from .permissions import IsOwner
@@ -85,3 +85,12 @@ class FavouriteCreateView(APIView):
     def post(self, request):
         data = add_products_to_favourite(self.request)
         return Response(status=201, data=data)
+
+
+class CartView(ListAPIView):
+    serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(user=user)
