@@ -111,3 +111,29 @@ class Cart(models.Model):
 
     def __str__(self):
         return f'{self.uuid}'
+
+
+class Order(models.Model):
+    PENDING = 'P'
+    ACCEPTED = 'A'
+    DONE = 'D'
+    STATUS_CHOICES = (
+        (PENDING, 'pending'),
+        (ACCEPTED, 'accepted'),
+        (DONE, 'done')
+    )
+    uuid = models.UUIDField(default=uuid.uuid4)
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart,
+                             on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=PENDING)
+
+    class Meta:
+        db_table = 'order'
+        verbose_name = 'order'
+        verbose_name_plural = 'orders'
+
+    def __str__(self):
+        return f'User: {self.user}\n Cart: {self.uuid}'
