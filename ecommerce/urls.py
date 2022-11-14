@@ -9,7 +9,8 @@ from .views import (
     CategoryCreateView,
     FavouriteView,
     FavouriteListView,
-    FavouriteCreateView
+    FavouriteCreateView,
+    CartView
 )
 
 urlpatterns = [
@@ -21,6 +22,7 @@ urlpatterns = [
     path('favourites/', FavouriteCreateView.as_view()),
     path('favourites/list/', FavouriteListView.as_view()),
     path('favourites/<str:uuid>', FavouriteView.as_view()),
+    path('cart/', CartView.as_view()),
 
     # for superuser
     path('category/new/', CategoryCreateView.as_view()),
