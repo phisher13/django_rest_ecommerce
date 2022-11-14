@@ -1,5 +1,5 @@
-from .models import Product, Favourite
-from .serializer import ProductSerializer, FavouritesCreateSerializer
+from .models import Product, Favourite, Cart
+from .serializer import ProductSerializer, FavouritesCreateSerializer, CartSerializer
 
 
 def get_serializable_queryset(category_slug: str, product_slug: str = None) -> dict:
@@ -24,4 +24,22 @@ def add_products_to_favourite(request):
         )
         favourite.products.add(request.data['product'])
     serializer = FavouritesCreateSerializer(instance=favourite)
+    return serializer.data
+
+
+def add_products_to_cart(request):
+    user = request.user
+    product = request.data
+    cart = Cart.objects.filter(product=product['product']).filter(user=user).first()
+    if cart:
+        cart.quantity += 1
+    else:
+        cart = Cart(
+            user=user,
+            product=product['product'],
+            quantity=1
+        )
+        cart.save()
+
+    serializer = CartSerializer(instance=cart)
     return serializer.data
