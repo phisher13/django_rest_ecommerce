@@ -8,16 +8,16 @@ from rest_framework.generics import (
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView, Response
 
-from .models import Category, Product, Favourite, Cart
+from .models import Category, Product, Favourite, Cart, Order
 from .serializer import (
     CategorySerializer,
     ProductSerializer,
     ProductCreateSerializer,
     CategoryCreateSerializer,
     FavouritesSerializer,
-    CartSerializer,
+    CartSerializer, OrderSerializer,
 )
-from .services import get_serializable_queryset, add_products_to_favourite, add_products_to_cart
+from .services import get_serializable_queryset, add_products_to_favourite, add_products_to_cart, crete_new_order
 from .permissions import IsOwner
 
 
@@ -101,4 +101,20 @@ class CartApiView(APIView):
 
     def post(self, request):
         data = add_products_to_cart(self.request)
+        return Response(status=201, data=data)
+
+
+class OrderView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        return Order.objects.all().filter(user=self.request.user)
+
+
+class OrderApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = crete_new_order(self.request)
         return Response(status=201, data=data)
