@@ -17,7 +17,7 @@ from .serializer import (
     FavouritesSerializer,
     CartSerializer,
 )
-from .services import get_serializable_queryset, add_products_to_favourite
+from .services import get_serializable_queryset, add_products_to_favourite, add_products_to_cart
 from .permissions import IsOwner
 
 
@@ -27,7 +27,7 @@ class CategoryListView(ListAPIView):
 
 
 class ProductApiView(APIView):
-    def get(self, request):
+    def get(self):
         category_slug = self.request.GET.get('category')
         product_slug = self.request.GET.get('product', None)
         data = get_serializable_queryset(category_slug=category_slug, product_slug=product_slug)
@@ -94,3 +94,11 @@ class CartView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return Cart.objects.filter(user=user)
+
+
+class CartApiView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = add_products_to_cart(self.request)
+        return Response(status=201, data=data)
