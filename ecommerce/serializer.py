@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer, \
     Serializer, ListSerializer
 
-from .models import Product, Category, Favourite, Cart
+from .models import Product, Category, Favourite, Cart, Order
 
 
 class RecursiveSerializer(Serializer):
@@ -76,4 +76,10 @@ class CartSerializer(ModelSerializer):
 
     class Meta:
         model = Cart
+        fields = '__all__'
+
+
+class OrderSerializer(ModelSerializer):
+    class Meta:
+        model = Order
         fields = '__all__'
