@@ -3,7 +3,8 @@ from django.contrib import admin
 from .models import (
     Product,
     Category,
-    Favourite
+    Favourite,
+    Cart
 )
 
 
@@ -16,3 +17,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Category)
 admin.site.register(Favourite)
+admin.site.register(Cart)
