@@ -1,14 +1,28 @@
+from django.core.cache import cache
+
 from .models import Product, Favourite, Cart, Order
 from .serializer import ProductSerializer, FavouritesCreateSerializer, CartSerializer, OrderSerializer
 
 
-def get_serializable_queryset(category_slug: str, product_slug: str = None) -> dict:
-    if product_slug:
-        product = Product.objects.filter(category__slug=category_slug).filter(slug=product_slug).first()
-        serializer = ProductSerializer(instance=product)
+def get_all_products(request):
+    category = request.GET['category']
+    if cache.get(category):
+        products = cache.get(category)
     else:
-        products = Product.objects.all().filter(category__slug=category_slug)
-        serializer = ProductSerializer(instance=products, many=True)
+        products = Product.objects.all().filter(category__name=category)
+        cache.set(category, products)
+    serializer = ProductSerializer(instance=products, many=True)
+
+    return serializer.data
+
+
+def get_detail_product(request, slug):
+    if cache.get(slug):
+        product = cache.get(slug)
+    else:
+        product = Product.objects.filter(slug=slug).first()
+        cache.set(slug, product)
+    serializer = ProductSerializer(instance=product)
 
     return serializer.data
 
