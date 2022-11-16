@@ -1,6 +1,8 @@
 from rest_framework.serializers import ModelSerializer, \
     Serializer, ListSerializer
+from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
+from .documents import ProductDocument
 from .models import Product, Category, Favourite, Cart, Order
 
 
@@ -83,3 +85,9 @@ class OrderSerializer(ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'
+
+
+class ProductDocumentSerializer(DocumentSerializer):
+    class Meta:
+        document = ProductDocument
+        fields = ('title', 'description')
