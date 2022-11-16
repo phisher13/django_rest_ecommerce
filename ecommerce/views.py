@@ -7,7 +7,10 @@ from rest_framework.generics import (
 )
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.views import APIView, Response
+from django_elasticsearch_dsl_drf.viewsets import DocumentViewSet
+from django_elasticsearch_dsl_drf.filter_backends import SearchFilterBackend
 
+from .documents import ProductDocument
 from .models import Category, Product, Favourite, Cart, Order
 from .serializer import (
     CategorySerializer,
@@ -15,7 +18,7 @@ from .serializer import (
     ProductCreateSerializer,
     CategoryCreateSerializer,
     FavouritesSerializer,
-    CartSerializer, OrderSerializer,
+    CartSerializer, OrderSerializer, ProductDocumentSerializer,
 )
 from .services import add_products_to_favourite, add_products_to_cart, crete_new_order, get_all_products, \
     get_detail_product
@@ -123,3 +126,17 @@ class OrderApiView(APIView):
     def post(self, request):
         data = crete_new_order(self.request)
         return Response(status=201, data=data)
+
+
+class ProductSearchESViewSet(DocumentViewSet):
+    document = ProductDocument
+    serializer_class = ProductDocumentSerializer
+    filter_backends = [SearchFilterBackend]
+    search_fields = [
+        'title',
+        'description'
+    ]
+
+    filter_fields = {
+        'title': 'title'
+    }
