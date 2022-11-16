@@ -1,4 +1,5 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 
 from .views import (
     CategoryListView,
@@ -14,11 +15,17 @@ from .views import (
     CartView,
     CartApiView,
     OrderView,
-    OrderApiView
+    OrderApiView,
+    ProductSearchESViewSet
 )
+
+router = routers.DefaultRouter()
+
+router.register('es', ProductSearchESViewSet, basename='es-search-product')
 
 urlpatterns = [
     # for every user
+    path('product/search/', include(router.urls)),
     path('category/', CategoryListView.as_view()),
     path('product/', ProductListView.as_view()),
     path('product/<str:slug>/', ProductDetailView.as_view()),
