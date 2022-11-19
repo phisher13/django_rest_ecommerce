@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'elasticsearch',
     'elasticsearch_dsl',
     'django_elasticsearch_dsl',
-    'django_elasticsearch_dsl_drf'
+    'django_elasticsearch_dsl_drf',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
