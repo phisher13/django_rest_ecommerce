@@ -1,10 +1,21 @@
+import requests
 from django.core.cache import cache
 
-from .models import Product, Favourite, Cart, Order
-from .serializer import ProductSerializer, FavouritesCreateSerializer, CartSerializer, OrderSerializer
+from .models import (
+    Product,
+    Favourite,
+    Cart,
+    Order
+)
+from .serializer import (
+    ProductSerializer,
+    FavouritesCreateSerializer,
+    CartSerializer,
+    OrderSerializer
+)
 
 
-def get_all_products(request):
+def get_all_products(request: requests) -> dict:
     category = request.GET['category']
     if cache.get(category):
         products = cache.get(category)
@@ -16,7 +27,7 @@ def get_all_products(request):
     return serializer.data
 
 
-def get_detail_product(request, slug):
+def get_detail_product(slug: str) -> dict:
     if cache.get(slug):
         product = cache.get(slug)
     else:
@@ -27,7 +38,7 @@ def get_detail_product(request, slug):
     return serializer.data
 
 
-def add_products_to_favourite(request):
+def add_products_to_favourite(request: requests) -> dict:
     user = request.user
     favourite = Favourite.objects.filter(user=user).first()
     if favourite:
@@ -41,7 +52,7 @@ def add_products_to_favourite(request):
     return serializer.data
 
 
-def add_products_to_cart(request):
+def add_products_to_cart(request) -> dict:
     user = request.user
     cart = Cart.objects.filter(product_id=request.data['product_id']).filter(user=user).first()
     if cart:
@@ -58,7 +69,7 @@ def add_products_to_cart(request):
     return serializer.data
 
 
-def crete_new_order(request):
+def crete_new_order(request) -> dict:
     user = request.user
     order = Order.objects.create(
         user=user,
