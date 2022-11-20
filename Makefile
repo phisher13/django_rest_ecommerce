@@ -12,3 +12,6 @@ super:
 
 req:
 	pip freeze > requirements.txt
+
+tests:
+	python manage.py test ecommerce/tests
