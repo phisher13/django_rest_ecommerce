@@ -16,7 +16,12 @@
 docker-compose up -d --build 
 ```
 
-#### 2. Enter http://localhost:8000
+#### 2. Enter http://localhost:8080
+#### 3. Swagger: http://localhost:8080/swagger/
+#### 4. For testing
+```
+make tests
+```
 
 
 
