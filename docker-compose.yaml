@@ -12,10 +12,10 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      - db
+      - postgres
       - redis
       - elasticsearch
-  db:
+  postgres:
     image: postgres:12
     volumes:
       - postgres_data:/var/lib/postgresql/data/
