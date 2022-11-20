@@ -11,6 +11,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
+          POSTGRES_HOST: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: root
           POSTGRES_DB: drf
