@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from rest_framework.test import APITestCase
 from rest_framework import status
 
-from .. import models
-from .. import serializer as serializers
+from ecommerce import models
+from ecommerce import serializer as serializers
 
 
 class TestCategoryView(APITestCase):

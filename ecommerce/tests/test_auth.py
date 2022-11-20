@@ -7,7 +7,7 @@ class TestUserAuthentication(APITestCase):
     def test_register(self):
         data = {
             'username': 'test_username1',
-            'email': 'test_email@test.com',
+            'email': 'test_email@tests.com',
             'password': 'test_password'
         }
 
@@ -20,7 +20,7 @@ class TestUserAuthentication(APITestCase):
     def test_login(self):
         data_reg = {
             'username': 'test_username1',
-            'email': 'test_email@test.com',
+            'email': 'test_email@tests.com',
             'password': 'test_password'
         }
 
