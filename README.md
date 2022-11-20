@@ -1,3 +1,22 @@
 ![Build Status](https://github.com/phisher13/django_rest_ecommerce/actions/workflows/django.yml/badge.svg?branch=master)
 
 # Django Ecommerce 
+
+### App stack:
+- Python
+- Django Rest Framework
+- PostgreSQL
+- Redis
+- Elasticsearch
+
+
+### Start App:
+#### 1. Build docker container
+```
+docker-compose up -d --build 
+```
+
+#### 2. Enter http://localhost:8000
+
+
+
