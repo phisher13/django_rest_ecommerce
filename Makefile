@@ -2,16 +2,17 @@ run:
 	python manage.py runserver 8080
 
 migrate:
-	python manage.py migrate
+	docker-compose exec web python manage.py migrate
 
 migrations:
-	python manage.py makemigrations
+	docker-compose exec web python manage.py makemigrations
 
 super:
-	python manage.py createsuperuser
+	docker-compose exec web python manage.py createsuperuser
 
 req:
-	pip freeze > requirements.txt
+	docker-compose exec web pip freeze > requirements.txt
 
 tests:
-	python manage.py test ecommerce/tests
+	docker-compose exec web python manage.py test ecommerce/tests
+
