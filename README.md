@@ -11,6 +11,12 @@
 
 
 ### Start App:
+<p>in .env need to change DB_HOST (for docker-compose)</p>
+
+```
+DB_HOST=postgres
+```
+
 #### 1. Build docker container
 ```
 docker-compose up -d --build 
